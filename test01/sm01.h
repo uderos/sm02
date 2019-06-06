@@ -8,7 +8,8 @@ enum eState {
   STATE_IDLE,
   STATE_ONE,
   STATE_TWO,
-  STATE_END
+  STATE_END,
+  STATE_ERROR
 };
 
 enum eEventId
