@@ -18,6 +18,80 @@ EVENT_ID_T event_base<EVENT_ID_T>::id() const
   return m_event_id;
 }
 
+template <typename SM_T, typename EVENT_ID_T, typename STATE_ID_T>
+bool default_guard_fn(SM_T &,
+                      const STATE_ID_T &,
+                      const event_base<EVENT_ID_T> &,
+                      const STATE_ID_T &)
+{
+  return true;
+}
+
+template <typename SM_T, typename EVENT_ID_T, typename STATE_ID_T>
+void default_action_fn(SM_T &,
+                       const STATE_ID_T &,
+                       const STATE_ID_T &,
+                       const event_base<EVENT_ID_T> &)
+{
+}
+
+
+template <typename SM_T, typename EVENT_ID_T, typename STATE_ID_T>
+sm_base<SM_T, EVENT_ID_T, STATE_ID_T>::trans_table_row_t::trans_table_row_t(
+  const STATE_ID_T & current_state_in,
+  const EVENT_ID_T & event_id_in,
+  const STATE_ID_T & next_state_in,
+  const guard_fn_t & guard_fn_in,
+  const action_fn_t & action_fn_in) :
+    current_state(current_state_in),
+    event_id(event_id_in),
+    next_state(next_state_in),
+    guard_fn(guard_fn_in),
+    action_fn(action_fn_in)
+{
+}
+
+template <typename SM_T, typename EVENT_ID_T, typename STATE_ID_T>
+sm_base<SM_T, EVENT_ID_T, STATE_ID_T>::trans_table_row_t::trans_table_row_t(
+  const STATE_ID_T & current_state_in,
+  const EVENT_ID_T & event_id_in,
+  const STATE_ID_T & next_state_in) :
+    trans_table_row_t(current_state_in,
+                      event_id_in,
+                      next_state_in,
+                      default_guard_fn<SM_T, EVENT_ID_T, STATE_ID_T>,
+                      default_action_fn<SM_T, EVENT_ID_T, STATE_ID_T>)
+{
+}
+
+template <typename SM_T, typename EVENT_ID_T, typename STATE_ID_T>
+sm_base<SM_T, EVENT_ID_T, STATE_ID_T>::trans_table_row_t::trans_table_row_t(
+  const STATE_ID_T & current_state_in,
+  const EVENT_ID_T & event_id_in,
+  const STATE_ID_T & next_state_in,
+  const guard_fn_t & guard_fn_in) :
+    trans_table_row_t(current_state_in,
+                      event_id_in,
+                      next_state_in,
+                      guard_fn_in,
+                      default_action_fn<SM_T, EVENT_ID_T, STATE_ID_T>)
+{
+}
+
+template <typename SM_T, typename EVENT_ID_T, typename STATE_ID_T>
+sm_base<SM_T, EVENT_ID_T, STATE_ID_T>::trans_table_row_t::trans_table_row_t(
+  const STATE_ID_T & current_state_in,
+  const EVENT_ID_T & event_id_in,
+  const STATE_ID_T & next_state_in,
+  const action_fn_t & action_fn_in) :
+    trans_table_row_t(current_state_in,
+                      event_id_in,
+                      next_state_in,
+                      default_guard_fn<SM_T, EVENT_ID_T, STATE_ID_T>,
+                      action_fn_in)
+{
+}
+
 //---------------------------------------------------------------------------
 template <typename SM_T, typename EVENT_ID_T, typename STATE_ID_T>
 sm_base<SM_T, EVENT_ID_T, STATE_ID_T>::sm_base(

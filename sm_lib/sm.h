@@ -44,16 +44,25 @@ class sm_base
       guard_fn_t guard_fn;
       action_fn_t action_fn;
 
+      trans_table_row_t(const STATE_ID_T  & current_state_in,
+                        const EVENT_ID_T  & event_id_in,
+                        const STATE_ID_T  & next_state_in,
+                        const guard_fn_t  & guard_fn_in,
+                        const action_fn_t & action_fn_in);
+
+      trans_table_row_t(const STATE_ID_T & current_state_in,
+                        const EVENT_ID_T & event_id_in,
+                        const STATE_ID_T & next_state_in);
+
       trans_table_row_t(const STATE_ID_T & current_state_in,
                         const EVENT_ID_T & event_id_in,
                         const STATE_ID_T & next_state_in,
-                        const guard_fn_t & guard_fn_in,
-                        const action_fn_t & action_fn_in) :
-        current_state(current_state_in),
-        event_id(event_id_in),
-        next_state(next_state_in),
-        guard_fn(guard_fn_in),
-        action_fn(action_fn_in) {}
+                        const guard_fn_t & guard_fn_in);
+
+      trans_table_row_t(const STATE_ID_T  & current_state_in,
+                        const EVENT_ID_T  & event_id_in,
+                        const STATE_ID_T  & next_state_in,
+                        const action_fn_t & action_fn_in);
     };
 
     using trans_table_t = std::vector<trans_table_row_t>;
